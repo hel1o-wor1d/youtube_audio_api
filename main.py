@@ -1,29 +1,27 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import json
-from datetime import datetime
-
-from meta import TrackOrder, OrderField, OrderDirection, TrackType
-from youtube_audio_api.api import Api
-
 if __name__ == '__main__':
 
+    import json
+    from datetime import datetime
+    from youtube_audio_api import TrackOrder, OrderField, OrderDirection, TrackType
+    from youtube_audio_api import Api
     import mysql.connector
 
     cnx = mysql.connector.connect(user='youtube', password='youtubeyoutube',
                                   host='127.0.0.1',
                                   database='youtube')
     cursor = cnx.cursor()
-    sql = "INSERT INTO creator_music(track_id, title, artist, duration, track_type, " \
-          "category, genres, moods, instruments, streaming_audio_url, publish_time, " \
-          "viper_id, license_type, external_artist_url) VALUES (%(track_id)s, %(title)s, %(artist)s, %(duration)s," \
-          " %(track_type)s, %(category)s, %(genres)s, %(moods)s, %(instruments)s, %(streaming_audio_url)s," \
-          " %(publish_time)s, %(viper_id)s, %(license_type)s, %(external_artist_url)s)"
+    sql = "INSERT INTO creator_music(track_id, title, artist, duration, track_type, category, " \
+          "genres, moods, instruments, streaming_audio_url, publish_time, viper_id, license_type, " \
+          "external_artist_url) VALUES (%(track_id)s, %(title)s, %(artist)s, %(duration)s, %(track_type)s, " \
+          "%(category)s, %(genres)s, %(moods)s, %(instruments)s, %(streaming_audio_url)s, %(publish_time)s, " \
+          "%(viper_id)s, %(license_type)s, %(external_artist_url)s)"
 
-    api = Api("ChannelID",          # youtube channel id
-              "Authorization",      # youtube website request header: Authorization
-              "Cookie")             # youtube website request header: Cookie
+    api = Api("ChannelID",  # youtube channel id
+              "Authorization",  # youtube website request header: Authorization
+              "Cookie")  # youtube website request header: Cookie
     track_order = TrackOrder(orderField=OrderField.TRACK_TITLE, orderDirection=OrderDirection.ASC)
     page_token = None
     total_size = 1
@@ -33,10 +31,10 @@ if __name__ == '__main__':
             trackIds = []
             for t in resp["tracks"]:
                 trackIds.append(t["trackId"])
-            tt = api.get_tracks(trackIds)
-            print(json.dumps(tt))
-            if "tracks" in tt and len(tt) > 0:
-                for t in tt["tracks"]:
+            resp2 = api.get_tracks(trackIds)
+            print(json.dumps(resp2))
+            if "tracks" in resp2 and len(resp2) > 0:
+                for t in resp2["tracks"]:
                     data = {
                         "track_id": t.get("trackId"),
                         "title": t.get("title"),
@@ -54,7 +52,7 @@ if __name__ == '__main__':
                         "external_artist_url": t.get("externalArtistUrl")
                     }
                     cursor.execute(sql, data)
-                    cnx.commit()
+                cnx.commit()
         page_token = None
         if "pageInfo" in resp and "nextPageToken" in resp["pageInfo"]:
             page_token = resp["pageInfo"]["nextPageToken"]
