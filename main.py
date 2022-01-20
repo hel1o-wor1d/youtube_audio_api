@@ -21,9 +21,9 @@ if __name__ == '__main__':
           " %(track_type)s, %(category)s, %(genres)s, %(moods)s, %(instruments)s, %(streaming_audio_url)s," \
           " %(publish_time)s, %(viper_id)s, %(license_type)s, %(external_artist_url)s)"
 
-    api = Api("jjjjjjjjjjjj",
-              "SAPISIDHASH",
-              "HomRayC4OraJTj6")
+    api = Api("ChannelID",          # youtube channel id
+              "Authorization",      # youtube website request header: Authorization
+              "Cookie")             # youtube website request header: Cookie
     track_order = TrackOrder(orderField=OrderField.TRACK_TITLE, orderDirection=OrderDirection.ASC)
     page_token = None
     total_size = 1
