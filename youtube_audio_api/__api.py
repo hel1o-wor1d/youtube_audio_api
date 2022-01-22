@@ -6,8 +6,10 @@ import urllib.request
 from collections import defaultdict
 from typing import List
 
-from .meta import Genre, Mood, LicenseType, TrackOrder, DurationRange, LIST_TRACKS_URL, \
-    GET_TRACKS_URL, TrackType, SoundEffectCategory
+__all__ = ["API"]
+
+from .__meta import Genre, Mood, LicenseType, TrackOrder, DurationRange, LIST_TRACKS_URL, GET_TRACKS_URL, TrackType, \
+    SoundEffectCategory
 
 
 class API(object):
@@ -22,58 +24,27 @@ class API(object):
         self.authorization = authorization
         self.cookie = cookie
 
-    def list_music(self,
-                   page_token: str = None,
-                   search_token: str = None,
-                   title_contains: str = None,
-                   genre_in: List[Genre] = None,
-                   mood_in: List[Mood] = None,
-                   artist_name_contains: str = None,
-                   duration_range: DurationRange = None,
-                   license_type_in: List[LicenseType] = None,
-                   track_order: TrackOrder = None,
-                   page_size: int = 100):
-        return self.list_tracks(page_token=page_token,
-                                search_token=search_token,
-                                title_contains=title_contains,
-                                genre_in=genre_in,
-                                mood_in=mood_in,
-                                artist_name_contains=artist_name_contains,
-                                duration_range=duration_range,
-                                license_type_in=license_type_in,
-                                track_order=track_order,
+    def list_music(self, page_token: str = None, search_token: str = None, title_contains: str = None,
+                   genre_in: List[Genre] = None, mood_in: List[Mood] = None, artist_name_contains: str = None,
+                   duration_range: DurationRange = None, license_type_in: List[LicenseType] = None,
+                   track_order: TrackOrder = None, page_size: int = 100):
+        return self.list_tracks(page_token=page_token, search_token=search_token, title_contains=title_contains,
+                                genre_in=genre_in, mood_in=mood_in, artist_name_contains=artist_name_contains,
+                                duration_range=duration_range, license_type_in=license_type_in, track_order=track_order,
                                 page_size=page_size)
 
-    def list_sound_effect(self,
-                          page_token: str = None,
-                          search_token: str = None,
-                          title_contains: str = None,
+    def list_sound_effect(self, page_token: str = None, search_token: str = None, title_contains: str = None,
                           sound_effect_category_in: List[SoundEffectCategory] = None,
-                          duration_range: DurationRange = None,
-                          track_order: TrackOrder = None,
-                          page_size: int = 100):
-        return self.list_tracks(page_token=page_token,
-                                search_token=search_token,
-                                title_contains=title_contains,
-                                sound_effect_category_in=sound_effect_category_in,
-                                duration_range=duration_range,
-                                track_type_in=[TrackType.SOUNDEFFECT],
-                                track_order=track_order,
-                                page_size=page_size)
+                          duration_range: DurationRange = None, track_order: TrackOrder = None, page_size: int = 100):
+        return self.list_tracks(page_token=page_token, search_token=search_token, title_contains=title_contains,
+                                sound_effect_category_in=sound_effect_category_in, duration_range=duration_range,
+                                track_type_in=[TrackType.SOUNDEFFECT], track_order=track_order, page_size=page_size)
 
-    def list_tracks(self,
-                    page_token: str = None,
-                    search_token: str = None,
-                    title_contains: str = None,
-                    sound_effect_category_in: List[SoundEffectCategory] = None,
-                    genre_in: List[Genre] = None,
-                    mood_in: List[Mood] = None,
-                    artist_name_contains: str = None,
-                    duration_range: DurationRange = None,
-                    license_type_in: List[LicenseType] = None,
-                    track_type_in: List[TrackType] = None,
-                    track_order: TrackOrder = None,
-                    page_size: int = 100) -> dict:
+    def list_tracks(self, page_token: str = None, search_token: str = None, title_contains: str = None,
+                    sound_effect_category_in: List[SoundEffectCategory] = None, genre_in: List[Genre] = None,
+                    mood_in: List[Mood] = None, artist_name_contains: str = None, duration_range: DurationRange = None,
+                    license_type_in: List[LicenseType] = None, track_type_in: List[TrackType] = None,
+                    track_order: TrackOrder = None, page_size: int = 100) -> dict:
 
         data = self.create_body()
         if search_token:
@@ -131,15 +102,10 @@ class API(object):
         return obj
 
     def get_request(self, url: str, data: bytes) -> urllib.request.Request:
-        return urllib.request.Request(url,
-                                      data=data,
-                                      headers={
-                                          "Authorization": self.authorization,
-                                          "Cookie": self.cookie,
-                                          "Origin": "https://studio.youtube.com",
-                                          "Content-Type": "application/json",
-                                          "X-Goog-AuthUser": "1"
-                                      },
+        return urllib.request.Request(url, data=data,
+                                      headers={"Authorization": self.authorization, "Cookie": self.cookie,
+                                               "Origin": "https://studio.youtube.com",
+                                               "Content-Type": "application/json", "X-Goog-AuthUser": "1"},
                                       method="POST")
 
     def create_body(self) -> defaultdict:

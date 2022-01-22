@@ -12,33 +12,18 @@ from typing import List
 import mysql.connector
 import wget
 
+import secret
 from youtube_audio_api import API, TrackType
 from youtube_audio_api import TrackOrder, OrderField, OrderDirection
 
 DOWNLOAD_PATH = "/Users/apple/Downloads/ytmusic/"
 
-api = API("UCHhrwqILU4xL3YVkOm8kkMA",
-          "SAPISIDHASH 1642651469_efbd23176b8894358abc6279d36065c6b21683e8",
-          "PREF=f4=4000000&tz=Asia.Shanghai&hl=zh-CN&gl=US&f6=80000; CONSENT=YES+yt.413556131.en+FX+677; "
-          "VISITOR_INFO1_LIVE=fQjCHqbye7c; _ga=GA1.2.559921130.1639120255; _gcl_au=1.1.1668962601.1639569320; "
-          "SID=GAiLl1xZCVRQEHomRayC4hwUdd0nQz5kc117AGb-0WEphy66GL_dj3gpRF2hjLEjjtmLqA.; "
-          "__Secure-1PSID=GAiLl1xZCVRQEHomRayC4hwUdd0nQz5kc117AGb-0WEphy66aFoF6Jd8kRjCwCI56QDuGA.; "
-          "__Secure-3PSID=GAiLl1xZCVRQEHomRayC4hwUdd0nQz5kc117AGb-0WEphy669epHqUDg9EGyyzpNleR-1g.; "
-          "HSID=A7IQAH4S8awvok2k7; SSID=A-qTd8dVqhLJCb8Ot; APISID=QfizmY8O8S-qDLr3/ABIYSpo-_G7jurty3; "
-          "SAPISID=HUUeeOraJTj6OaI1/AGZzAsg4EN669LyN2; __Secure-1PAPISID=HUUeeOraJTj6OaI1/AGZzAsg4EN669LyN2; "
-          "__Secure-3PAPISID=HUUeeOraJTj6OaI1/AGZzAsg4EN669LyN2; "
-          "LOGIN_INFO=AFmmF2swRQIgQna_1cNJHx1wK8jHKhacNAcRtj-9BVZ"
-          "-fCGyhb_naUACIQDhkQFXm4fL6cxB9X_Qxln5fZ2p1aABpP8WkqN5MpPk8A"
-          ":QUQ3MjNmem94QTV4OEZWS3JWTVZNZE04VUtDYjhjdUQwdUtGU1VLQUh0bnAtNGlISnl3ZVk3UjlZbk5SZjdBVnBpVk12N3h6Rk"
-          "VTblpjbXpyZXBzSGlzajBQT3N6ajZ4SHVtb2kwUkk2YTVnM3V2WWRSNkpLdGg3cEpIUi0wMTdYY3B6dmUxWkZ2bE1aZWhiVnVjai"
-          "1aQlM0bXkxeVZOOUd3; SIDCC=AJi4QfGuMABkzI22VlANLOJLxsfA2aYSmtxtsY2rlEOEMgJnBnn4l-zz-z25POf0nl9dgwUUSw;"
-          " __Secure-3PSIDCC=AJi4QfFB_ZBhZkZL8ZPMI5voLrx-D-GhwNGc35RRCvys0eAeqjNXwCDPFKJByy5csPIQTepODV0;"
-          " YSC=Vj5Df-oL5Cg")
+api = API(secret.channel_id, secret.authorization, secret.cookie)
 
 
 def mysql_tracks(tracks: List):
     sql = """
-REPLACE INTO `creator_music`(
+REPLACE INTO `creator_audio`(
     `track_id`,
     `title`,
     `artist`,
