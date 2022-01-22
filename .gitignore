@@ -3,4 +3,4 @@
 venv/
 __pycache__
 *.pyc
-/secret.py
+secret.py
