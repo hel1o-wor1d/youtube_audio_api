@@ -10,14 +10,14 @@ from .meta import Genre, Mood, LicenseType, TrackOrder, DurationRange, LIST_TRAC
     GET_TRACKS_URL, TrackType, SoundEffectCategory
 
 
-class Api(object):
-    '''
-    channel_id: your channel id
-    authorization: youtube website http header authorization
-    cookie: youtube website http header cookie
-    '''
+class API(object):
 
     def __init__(self, channel_id: str, authorization: str, cookie: str):
+        """
+        channel_id: your channel id
+        authorization: youtube website http header authorization
+        cookie: youtube website http header cookie
+        """
         self.channel_id = channel_id
         self.authorization = authorization
         self.cookie = cookie
